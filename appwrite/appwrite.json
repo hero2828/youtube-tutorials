@@ -25,6 +25,42 @@
             "entrypoint": "src/main.ts",
             "commands": "bun install",
             "path": "functions/create-user"
+        },
+        {
+            "$id": "67729cce0029680f293d",
+            "execute": [
+                "any"
+            ],
+            "name": "nodejs-function",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-22",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "dist/main.js",
+            "commands": "npm install && npm run build",
+            "path": "functions/nodejs-function"
+        },
+        {
+            "$id": "6773e8d1002b8d63ccfe",
+            "execute": [
+                "any"
+            ],
+            "name": "nodejs-function-2",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-22",
+            "scopes": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "dist/main.js",
+            "commands": "npm install && npm run build",
+            "path": "functions/nodejs-function-2"
         }
     ]
 }
