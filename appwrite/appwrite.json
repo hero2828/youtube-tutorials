@@ -1,0 +1,30 @@
+{
+    "projectId": "676e9c26002c2953d948",
+    "functions": [
+        {
+            "$id": "677ae3c3002118b30811",
+            "execute": [
+                "any"
+            ],
+            "name": "create-user",
+            "enabled": true,
+            "logging": true,
+            "runtime": "bun-1.1",
+            "scopes": [
+                "users.read",
+                "databases.read",
+                "collections.read",
+                "documents.read",
+                "documents.write"
+            ],
+            "events": [
+                "users.*.create"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.ts",
+            "commands": "bun install",
+            "path": "functions/create-user"
+        }
+    ]
+}
