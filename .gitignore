@@ -3,3 +3,4 @@
 node_modules
 appwrite.json
 .env
+.DS_Store
