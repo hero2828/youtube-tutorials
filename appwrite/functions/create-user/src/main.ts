@@ -1,10 +1,4 @@
-import { Client, Databases, Users } from "node-appwrite";
-import { Models } from "appwrite";
-
-interface RequestBody extends Models.User<Models.Preferences> {
-  targets: Models.Target[];
-  accessedAt: string;
-}
+import { Client, Users } from "node-appwrite";
 
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }: any) => {
@@ -13,39 +7,29 @@ export default async ({ req, res, log, error }: any) => {
   const client = new Client()
     .setEndpoint(Bun.env["APPWRITE_FUNCTION_API_ENDPOINT"])
     .setProject(Bun.env["APPWRITE_FUNCTION_PROJECT_ID"])
-    .setKey(req.headers["x-appwrite-key"] ?? "");
+    .setKey(req.headers['x-appwrite-key'] ?? '');
   const users = new Users(client);
-  const databases = new Databases(client);
-
-  const data: RequestBody = req.bodyJson;
 
   try {
-    const user = await databases.getDocument(
-      Bun.env["DATABASE_ID"],
-      Bun.env["COLLECTION_ID"],
-      data.$id,
-    );
+    const response = await users.list();
+    // Log messages and errors to the Appwrite Console
+    // These logs won't be seen by your end users
+    log(`Total users: ${response.total}`);
+  } catch(err) {
+    error("Could not list users: " + err.message);
+  }
 
-    if (user) {
-      return res.json({ message: "User already exists" });
-    }
-  } catch (e: any) {
-    log("User does not exist in database. Proceed with creating the user in database.")
+  // The req object contains the request data
+  if (req.path === "/ping") {
+    // Use res object to respond with text(), json(), or binary()
+    // Don't forget to return a response!
+    return res.text("Pong");
   }
-  
-  try {
-    await databases.createDocument(
-      Bun.env["DATABASE_ID"],
-      Bun.env["COLLECTION_ID"],
-      data.$id,
-      {
-        name: data.name,
-      },
-    );
-    log("User created successfully");
-    return res.json({ message: "User created successfully" });
-  } catch (e: any) {
-    error("Failed to create the user in the database");
-    return res.json({ message: "Failed to create the user in the database" });
-  }
+
+  return res.json({
+    motto: "Build like a team of hundreds_",
+    learn: "https://appwrite.io/docs",
+    connect: "https://appwrite.io/discord",
+    getInspired: "https://builtwith.appwrite.io",
+  });
 };
